@@ -1,0 +1,12 @@
+bin/
+CVS/
+O.*/
+RELEASE_SITE
+RELEASE.override
+CONFIG_SITE.override
+db/
+dbd/
+iocBoot/*/envPaths
+iocBoot/*/*/envPaths
+*~
+*.pyc
