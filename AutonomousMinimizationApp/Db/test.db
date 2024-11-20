@@ -1,0 +1,7 @@
+record(bo, "TEST:MLD0:LAUNCH"){
+    field(SCAN, "Passive")
+    field(VAL, "0")
+    field(DTYP, "Launcher")
+    field(OUT, "@python ../../AutonomousMinimizationApp/script/test.py")
+    field(HIGH, "1")
+}

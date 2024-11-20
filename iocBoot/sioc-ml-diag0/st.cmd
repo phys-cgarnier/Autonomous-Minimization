@@ -8,14 +8,16 @@
 cd "${TOP}"
 
 ## Register all support components
-dbLoadDatabase "dbd/AutonomousMinimization.dbd"
-AutonomousMinimization_registerRecordDeviceDriver pdbbase
+dbLoadDatabase("dbd/AutonomousMinimization.dbd")
+AutonomousMinimization_registerRecordDeviceDriver(pdbbase)
 
 ## Load record instances
-#dbLoadRecords("db/xxx.db","user=cgarnier")
 
-cd "${TOP}/iocBoot/${IOC}"
-iocInit
+py("import test_support;")
+py("test_support.hello_world()")
+dbLoadRecords("db/test.db","user=cgarnier")
+cd("${TOP}/iocBoot/${IOC}")
+iocInit()
 
 ## Start any sequence programs
 #seq sncxxx,"user=cgarnier"

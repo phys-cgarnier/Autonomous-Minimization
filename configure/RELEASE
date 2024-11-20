@@ -24,7 +24,14 @@
 # Variables and paths to dependent modules:
 #MODULES = /path/to/modules
 #MYMODULE = $(MODULES)/my-module
+include $(TOP)/RELEASE_SITE
+## how can can I get EPICS_MODULES to be picked up by RELEASE SITE
+#EPICS_MODULES=/afs/slac/g/lcls/epics/R7.0.3.1-1.0/modules
+#CAPUTLOG_MODULE_VERSION=R3.7-1.0.0
+PYDEVSUP_MODULE_VERSION=R1.2-0.0.2
 
+#CAPUTLOG=$(EPICS_MODULES)/caPutLog/$(CAPUTLOG_MODULE_VERSION)
+PYDEVSUP=$(EPICS_MODULES)/pyDevSup/$(PYDEVSUP_MODULE_VERSION)
 # If using the sequencer, point SNCSEQ at its top directory:
 #SNCSEQ = $(MODULES)/seq-ver
 
