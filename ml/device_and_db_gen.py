@@ -22,9 +22,21 @@ class meme_service():
 class Generator(ABC):
     filename:str
     master_device_list: List[str]
+    beamline: str
+    substitutions: List[str]
+    config: Dict[str,str]
     
+    def dump_to_file(self):
+        ...
 
-
+    def dump_message(self):
+        return f'This is an automatically generated file.'
+    
+    @abstractmethod
+    def config_contents(self):
+        ...
+    
+    
 
 
 
