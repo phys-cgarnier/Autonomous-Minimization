@@ -31,3 +31,8 @@ iocBoot_DEPEND_DIRS += $(filter %App,$(DIRS))
 # Add any additional dependency rules here:
 
 include $(TOP)/configure/RULES_TOP
+
+distclean: remove_sub_products
+
+remove_sub_products:
+	rm -rf AutonomousMinimizationApp/Db/*_sub.substitutions python3.8/

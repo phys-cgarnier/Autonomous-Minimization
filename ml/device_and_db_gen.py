@@ -1,6 +1,8 @@
 import os
 import devsup
 import meme
+from abc import ABC, abstractmethod
+from typing import List, Dict, Any
 #get env variable that says what the beam line is, this is set in the ioc st.cmd file
 
 class meme_service():
@@ -16,6 +18,11 @@ class meme_service():
         return device_list
 
 
+
+class Generator(ABC):
+    filename:str
+    master_device_list: List[str]
+    
 
 
 
