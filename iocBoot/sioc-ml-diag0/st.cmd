@@ -16,8 +16,11 @@ AutonomousMinimization_registerRecordDeviceDriver(pdbbase)
 
 py("import test_support;")
 py("test_support.hello_world()")
-py("import device_and_db_gen;")
-py("device_and_db_gen.meme_service()")
+#py("import device_and_db_gen;")
+#py("device_and_db_gen.meme_service()")
+py("from magnet_generators import MagnetGenerator;")
+py("print(MagnetGenerator(beamline='DIAG0').device_list)")
+py
 dbLoadRecords("db/test.db","user=cgarnier")
 cd("${TOP}/iocBoot/${IOC}")
 iocInit()

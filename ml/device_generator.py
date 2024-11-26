@@ -3,7 +3,7 @@ import os
 import meme
 from abc import ABC, abstractmethod
 from typing import List, Dict, Any
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel
 #get env variable that says what the beam line is, this is set in the ioc st.cmd file
 
 '''
@@ -23,10 +23,7 @@ class meme_service():
 
 class Generator(ABC,BaseModel):
     #filename:str
-    #_device_list: List[str] = None
-    model_config = ConfigDict(arbitrary_types_allowed=True)
     beamline: str
-
     #substitutions: List[str] = None
     #config: Dict[str,str] = None
     
