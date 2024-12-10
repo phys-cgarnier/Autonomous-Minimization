@@ -2,7 +2,7 @@ import os
 #import devsup
 import meme
 from abc import ABC, abstractmethod
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 from pydantic import BaseModel
 #get env variable that says what the beam line is, this is set in the ioc st.cmd file
 
@@ -22,8 +22,9 @@ class meme_service():
 
 
 class Generator(ABC,BaseModel):
-    #filename:str
-    beamline: str
+    # Need to up python interpreter in order to use newer pydantic version and ConfigDict for arbitrary types
+    filename:Optional[str]
+    beamline: str = os.getenv('BEAMLINE')
     #substitutions: List[str] = None
     #config: Dict[str,str] = None
     

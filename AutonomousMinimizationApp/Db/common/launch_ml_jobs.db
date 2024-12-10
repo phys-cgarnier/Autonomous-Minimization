@@ -1,0 +1,11 @@
+record(record(calc, "ML:$(B):STATSUMY") {
+    field(DESC, "Stats summary for $(B) readiness")
+    field(INPA, "$$(EOIC)")
+    field(INPB, "$(MPS)")
+    field(INPC, "$(RATE)")
+    field(INPD, "$(EOIC_FLAG)")
+    field(INPE, "$(MPS_FLAG)")
+    field(INPF, "$(RATE_FLAG)")
+    field(INPG, "ML:USER:READY")
+    field(CALC, "A=B&&A=D&&B=E&&C=F?1:0")
+})
