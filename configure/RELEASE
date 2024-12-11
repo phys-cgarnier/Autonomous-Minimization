@@ -34,7 +34,7 @@ PYDEVSUP_MODULE_VERSION=R1.2-0.0.2
 PYDEVSUP=$(EPICS_MODULES)/pyDevSup/$(PYDEVSUP_MODULE_VERSION)
 # If using the sequencer, point SNCSEQ at its top directory:
 #SNCSEQ = $(MODULES)/seq-ver
-
+#echo $(PYDEVSUP)
 # EPICS_BASE should appear last so earlier modules can override stuff:
 EPICS_BASE = /afs/slac/g/lcls/epics/base/R7.0.3.1-1.0
 

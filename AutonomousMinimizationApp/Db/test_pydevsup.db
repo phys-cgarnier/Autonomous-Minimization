@@ -1,0 +1,5 @@
+  record(longin, "test:ml:pyrbv") {
+    field(DTYP, "Python Device")
+    field(INP , "@test_class_support banana bread")
+    field(SCAN, "1 second")
+  }
