@@ -8,7 +8,7 @@ include $(TOP)/configure/CONFIG
 # databases, templates, substitutions like this
 DB += test.db
 DB += test_pydevsup.db
-DB += common/launch_ml_jobs.db
+DB += launch_ml_jobs.db
 
 #----------------------------------------------------
 # If <anyname>.db template is not named <anyname>*.template add

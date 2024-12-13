@@ -1,0 +1,22 @@
+  record(longin, "test:ml:emit") {
+    field(DTYP, "Python Device")
+    field(INP , "@ml_emittance_scan_runner DIAG0 QDG006")
+    
+  }
+
+
+record
+
+
+
+
+  # hard code values for test purposes decide where we want field(DTYP, "Python) (pydevsup) or field(DTYP)
+#record(record(calc, "ML:$(B):STATSUMY") {
+    #field(DESC, "Stats summary for $(B) readiness")
+    #field(INPA, "$(MPS)")
+    #field(INPB, "$(RATE)")
+    #field(INPC, "$(MPS_FLAG)")
+    #field(INPF, "$(RATE_FLAG)")
+    #field(INPG, "ML:USER:READY")
+    #field(CALC, "A=B&&A=D&&B=E&&C=F?1:0")
+#}) cdadsda
