@@ -55,6 +55,7 @@ def build(record,args):
     print(largs)
     return EmittanceRunner(record,*largs)
 
+print('test pulling on dev3')
 
 '''
 class QuadScanEmittance(Measurement):
