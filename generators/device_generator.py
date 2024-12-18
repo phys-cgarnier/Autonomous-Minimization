@@ -23,7 +23,7 @@ class meme_service():
 
 class Generator(ABC,BaseModel):
     # Need to up python interpreter in order to use newer pydantic version and ConfigDict for arbitrary types
-    filename:Optional[str]
+    #filename:Optional[str]
     beamline: str = os.getenv('BEAMLINE')
     #substitutions: List[str] = None
     #config: Dict[str,str] = None
