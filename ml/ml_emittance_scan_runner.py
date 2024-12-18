@@ -76,3 +76,6 @@ def build(record,args):
     largs = [l.strip() for l in largs ]
     print(largs)
     return EmittanceRunner(record,*largs)
+
+# why is the PV not visible from dev3 when the ioc is started? is it that I needa soft ioc? I don't understand
+# get an exception in del_record (EmittanceRunner)

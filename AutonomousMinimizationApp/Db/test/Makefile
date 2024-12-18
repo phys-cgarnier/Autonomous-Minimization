@@ -6,8 +6,8 @@ include $(TOP)/configure/CONFIG
 #----------------------------------------------------
 # Create and install (or just install) into <top>/db
 # databases, templates, substitutions like this
-DIRS += test
-DIRS += common
+DB += test_pydevsup.db
+DB += test.db
 
 #----------------------------------------------------
 # If <anyname>.db template is not named <anyname>*.template add
