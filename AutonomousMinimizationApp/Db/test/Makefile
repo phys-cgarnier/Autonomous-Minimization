@@ -1,4 +1,4 @@
-TOP=../..
+TOP=../../..
 include $(TOP)/configure/CONFIG
 #----------------------------------------
 #  ADD MACRO DEFINITIONS AFTER THIS LINE
@@ -6,6 +6,11 @@ include $(TOP)/configure/CONFIG
 #----------------------------------------------------
 # Create and install (or just install) into <top>/db
 # databases, templates, substitutions like this
+#DB_INSTALLS += $(IOCADMIN)/db/iocAdminSoft.db
+#DB_INSTALLS += $(IOCADMIN)/db/access.db        
+#DB_INSTALLS += $(AUTOSAVE)/db/save_restoreStatus.db
+#IOCRELEASE_DB += iocRelease.db
+
 DB += test_pydevsup.db
 DB += test.db
 
