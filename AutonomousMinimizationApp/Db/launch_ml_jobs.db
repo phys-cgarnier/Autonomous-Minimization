@@ -1,12 +1,27 @@
   record(longin, "test:ml:emit") {
     field(DTYP, "Python Device")
-    field(INP , "@ml_emittance_scan_runner DIAG0 QDG006")
-    
+    field(INP , "@ml_emittance_scan_runner DIAG0 QDG006 OTRDG02")
   }
 
 
 
-'''
+#
+
+#record(longin, "test:ml:emit") {
+    #field(DTYP, "Python Device")
+    #field(INP , "@ml_emittance_scan_runner @emittance_serialize:serialized_model") #can only be 256 characters... idk if this is the method we want to take
+    #maybe should pass a list of args to reduce characters.... then the list is used to instantiate all classes needed for emittance....
+  #}
+
+#record(aSub, "emittance_serialize")
+#{
+  #field(INPA, "stuff we care about")
+  #field(SNAM,"emittance_serializer")
+  #field(OUTA, "serialized_model")
+#}
+
+
+
 
   # hard code values for test purposes decide where we want field(DTYP, "Python) (pydevsup) or field(DTYP)
 #record(record(calc, "ML:$(B):STATSUMY") {
@@ -18,4 +33,3 @@
     #field(INPG, "ML:USER:READY")
     #field(CALC, "A=B&&A=D&&B=E&&C=F?1:0")
 #}) 
-'''
