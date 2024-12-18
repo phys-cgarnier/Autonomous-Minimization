@@ -1,4 +1,4 @@
-from ml.device_generator import Generator
+from generators.device_generator import Generator
 from typing import List, Dict, Any
 
 class MagnetGenerator(Generator):

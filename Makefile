@@ -6,7 +6,7 @@ include $(TOP)/configure/CONFIG
 DIRS += configure
 DIRS += $(wildcard *Sup)
 DIRS += $(wildcard *App)
-#DIRS += generators
+DIRS += generators
 DIRS += ml
 DIRS += $(wildcard *Top)
 DIRS += $(wildcard iocBoot)
