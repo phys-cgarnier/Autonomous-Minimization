@@ -6,8 +6,7 @@ include $(TOP)/configure/CONFIG
 #----------------------------------------------------
 # Create and install (or just install) into <top>/db
 # databases, templates, substitutions like this
-DIRS += test
-DIRS += common
+DB += launch_ml_jobs.db
 
 #----------------------------------------------------
 # If <anyname>.db template is not named <anyname>*.template add
