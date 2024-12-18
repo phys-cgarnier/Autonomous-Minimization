@@ -1,42 +1,63 @@
-# This program takes in args and creates the work flow to do an emittance scan.
-# note to self, need current lcls-tools to be in env, also need to update pydevsup to use python version from rhel_7_devel env
-from pydantic import BaseModel , model_validator
+from pydantic import BaseModel , model_validator, ConfigDict
 from lcls_tools.common.measurements.emittance_measurement import QuadScanEmittance
 from lcls_tools.common.devices.magnet import Magnet
-from lcls_tools.common.devices.reader import create_magnet
-from lcls_tools.common.measurements.measurement import Measurement
+from lcls_tools.common.devices.screen import Screen
+from lcls_tools.common.devices.reader import create_magnet, create_screen
+from lcls_tools.common.measurements.screen_profile import ScreenBeamProfileMeasurement
 import numpy as np
 from typing import List
+from datetime import datetime
+
 class AutonomousEmittanceScanMeasure(BaseModel):
-    #what is everything I need to run an emittance scan
-    #quad_scan: QuadScanEmittance 
+    model_config = ConfigDict(arbitrary_types_allowed=True)   
+    energy: float = .091 #arbitrary right now until we can get energy value
     area: str
     magnet_name: str
     magnet: Magnet 
-    scan_values: List[float]
+    scan_values: List[float] = None
+    screen_name: str
+    screen: Screen
+    beamsize_measurement: ScreenBeamProfileMeasurement = None
+    quad_scan: QuadScanEmittance = None
+    #run_attempts: int --> these params need to get set else where.
+    #run_wait_time_ms: int
 
 
     @model_validator(mode='before')
     def instantiate_magnet(cls,values):
         if 'magnet' not in values:
-            values['magnet'] = create_magnet(values['area'],values['manget_name'],)
+            values['magnet'] = create_magnet(values['area'],values['magnet_name'],)
         return values
 
+    @model_validator(mode='before')
+    def instantiate_screen(cls,values):
+        if 'screen' not in values:
+            values['screen'] = create_screen(values['area'],values['screen_name'],)
+        return values
+
+    @model_validator(mode='after')
+    def instantiate_scan_values(cls,instance):
+        instance.scan_values = np.linspace(instance.magnet.bmin,instance.magnet.bmax,5)
+        return instance
+
+    @model_validator(mode='after')
+    def instantiate_screen_measurement(cls,instance):
+        instance.beamsize_measurement = ScreenBeamProfileMeasurement(device=instance.screen)
+        return instance
+
+    @model_validator(mode='after')
+    def instantiate_quad_scan(cls,instance):
+        instance.quad_scan = QuadScanEmittance(energy = instance.energy, scan_values=
+                             instance.scan_values, magnet = instance.magnet, beamsize_measurement=
+                             instance.beamsize_measurement)
+        return instance
 
 
 class EmittanceRunner:
     # multi threading when I have capacity --> look at examples in pydevsup source code
-    def __init__(self, record_name, area, magnet_name):
-        print(area)
-        self.area = area
-        self.magnet_name = magnet_name
-
-        print(magnet_name)
-        self.record_name = record_name
-        self.magnet = create_magnet(area = 'DIAG0', name = 'QDG001')
-        #from magnet can get the PVs we need??? 
-        print(type(self.magnet))
-
+    def __init__(self, record_name, area, magnet_name, screen_name):
+        self.auto_emittance_kwargs = {'area':area, 'magnet_name' :magnet_name, 'screen_name' : screen_name}
+        self.auto_emittance = AutonomousEmittanceScanMeasure(**self.auto_emittance_kwargs)
     def setup_auto_emittance(self):
         pass
     def process(self,record_name,args):
@@ -45,6 +66,7 @@ class EmittanceRunner:
         ### make a pydanic class that can run emittance the ????? I dont KNOW!~
 
         record_name = f'Process {record_name} was a success'
+        print(self.auto_emittance.quad_scan.name)
 
 
 def build(record,args):
@@ -54,39 +76,3 @@ def build(record,args):
     largs = [l.strip() for l in largs ]
     print(largs)
     return EmittanceRunner(record,*largs)
-
-print('test pulling on dev3')
-
-'''
-class QuadScanEmittance(Measurement):
-    """Use a quad and profile monitor/wire scanner to perform an emittance measurement
-    ------------------------
-    Arguments:
-    energy: beam energy
-    scan_values: BDES values of magnet to scan over
-    magnet: Magnet object used to conduct scan
-    beamsize_measurement: BeamsizeMeasurement object from profile monitor/wire scanner
-    n_measurement_shots: number of beamsize measurements to make per individual quad
-    strength
-    ------------------------
-    Methods:
-    measure: does the quad scan, getting the beam sizes at each scan value,
-    gets the rmat and twiss parameters, then computes and returns the emittance and BMAG
-    measure_beamsize: take measurement from measurement device, store beam sizes
-    """
-    energy: float # need energy PV.... 
-    scan_values: list[float] 
-    magnet: Magnet
-    beamsize_measurement: Measurement
-    n_measurement_shots: PositiveInt = 1
-
-    rmat: Optional[ndarray] = None  # 4 x 4 beam transport matrix
-    design_twiss: Optional[dict] = None  # design twiss values
-    beam_sizes: Optional[dict] = {}
-
-    name: str = "quad_scan_emittance"
-    model_config = ConfigDict(arbitrary_types_allowed=True)
-
-'''
-
-# can make the Measurement field in Quadscan have a default so that I don't have to create it here

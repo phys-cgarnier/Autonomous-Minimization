@@ -5,10 +5,8 @@
   }
 
 
-record
 
-
-
+'''
 
   # hard code values for test purposes decide where we want field(DTYP, "Python) (pydevsup) or field(DTYP)
 #record(record(calc, "ML:$(B):STATSUMY") {
@@ -19,4 +17,5 @@ record
     #field(INPF, "$(RATE_FLAG)")
     #field(INPG, "ML:USER:READY")
     #field(CALC, "A=B&&A=D&&B=E&&C=F?1:0")
-#}) cdadsda
+#}) 
+'''
