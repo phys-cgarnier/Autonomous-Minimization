@@ -14,7 +14,7 @@ long checks(subRecord *precord) {
     printf("subRecord '%s' called with INPA=%.2f and INPB=%.2f\n", precord->name, inpa, inpb);
 
     // Perform optional computation (here, we'll set the VAL field to INPA + INPB)
-    int result = 1
+    int result = 1;
     precord->val = result;
 
     // Return 0 for success
