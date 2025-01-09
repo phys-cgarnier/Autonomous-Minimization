@@ -4,7 +4,6 @@ record(bo, "test:ml:emit:user_ctrl"){
     field(ZNAM, "OFF")
     field(ONAM, "ON")
     field(VAL, "0")
-    field(PINI, "YES")
 }
 
 record(stringout, "test:ml:emit:yaml"){
@@ -37,7 +36,7 @@ record(calcout, "test:ml:emit:ready"){
 
 record(ao,"test:ml:emit:program_start"){
   field(DESC, "Start of program")
-  field(VAL, "0'")
+  field(VAL, "0")
   #field(FLNK, "test:ml:emit:program")
 }
 
