@@ -1,19 +1,18 @@
 
-record(bo, "test:ml:emit:user_ctrl") {
+record(bo, "test:ml:emit:user_ctrl"){
     field(DESC, "Controls whether or not emittance prog will perform readiness checks and run")
-    field(ZNAM, "OFF")   # Name for 0
-    field(ONAM, "ON")    # Name for 1
-    field(VAL, "0")      # Initial value
+    field(ZNAM, "OFF")
+    field(ONAM, "ON")
+    field(VAL, "0")
 }
 
-record(stringout, "test:ml:emit:yaml") {
+record(stringout, "test:ml:emit:yaml"){
     field(DESC, "String containing the name of the programs yaml file")
     field(OUT,  "auto_emit_diag0.yaml")
 }
 
 record(sub, "test:ml:emit:readiness_checks"){
-  #field(INPA, "test:ml:user:user_control PP")
-  field(SCAN, "1 second")
+  field(INPA, "test:ml:user:user_control PP")
   field(SNAM,"program_readiness_checks") #python module, or c subroutine should check with both cases
   field(VAL, "0")
 }
@@ -37,7 +36,6 @@ record(ao,"test:ml:emit:program_start"){
   field(DESC, "Start of program")
   field(VAL, "0'")
   #field(FLNK, "test:ml:emit:program")
-
 }
 
 #record(longin, "test:ml:emit:program") {
