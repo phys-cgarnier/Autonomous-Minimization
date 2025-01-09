@@ -5,10 +5,10 @@
 #include <epicsExport.h>
 
 // Custom subroutine function
-static long subChecksInit(struct subRecord *psub){
-    printf("subInit was called\n");
-    return 0;
-}
+//static long subChecksInit(struct subRecord *psub){
+//    printf("subInit was called\n");
+//    return 0;
+//}
 
 static long subChecksProcess(struct subRecord *psub){
     // Access inputs
@@ -25,5 +25,5 @@ static long subChecksProcess(struct subRecord *psub){
 }
 
 // Register the function with EPICS
-epicsRegisterFunction(subChecksInit);
+//epicsRegisterFunction(subChecksInit);
 epicsRegisterFunction(subChecksProcess);
