@@ -4,6 +4,7 @@ record(bo, "test:ml:emit:user_ctrl"){
     field(ZNAM, "OFF")
     field(ONAM, "ON")
     field(VAL, "0")
+    field(PINI, "YES")
 }
 
 record(stringout, "test:ml:emit:yaml"){
@@ -12,10 +13,11 @@ record(stringout, "test:ml:emit:yaml"){
 }
 
 record(sub, "test:ml:emit:readiness_checks"){
-  field(INPA, "test:ml:emit:user_ctrl CP")
-  #field(INAM, "subChecksInit")
+  field(INAM, "subChecksInit")
   field(SNAM, "subChecksProcess") #python module, or c subroutine should check with both cases
+  field(INPA, "test:ml:emit:user_ctrl CP")
   field(VAL, "0")
+  field(PINI, "YES")
 }
 
 record(calcout, "test:ml:emit:ready"){
