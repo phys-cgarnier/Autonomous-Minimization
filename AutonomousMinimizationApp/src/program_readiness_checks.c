@@ -5,21 +5,27 @@
 #include <epicsExport.h>
 
 // Custom subroutine function
-long checks(subRecord *precord) {
+static long subChecksInit(struct subRecord *psub)
+{
+    printf("subInit was called\n");
+    return 0;
+}
+static long subChecksProcess(struct subRecord *psub) {
     // Access inputs
-    double inpa = precord->a;
-    double inpb = precord->b;
+    double inpa = psub->a;
+    double inpb = psub->b;
 
     // Print the values to the IOC console
-    printf("subRecord '%s' called with INPA=%.2f and INPB=%.2f\n", precord->name, inpa, inpb);
+    printf("subRecord '%s' called with INPA=%.2f and INPB=%.2f\n", psub->name, inpa, inpb);
 
     // Perform optional computation (here, we'll set the VAL field to INPA + INPB)
     int result = 1;
-    precord->val = result;
+    psub->val = result;
 
     // Return 0 for success
     return 0;
 }
 
 // Register the function with EPICS
-epicsRegisterFunction(checks);
+epicsRegisterFunction(subChecksInit);
+epicsRegisterFunction(subChecksProcess);
