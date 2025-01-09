@@ -12,7 +12,7 @@ record(stringout, "test:ml:emit:yaml"){
 }
 
 record(sub, "test:ml:emit:readiness_checks"){
-  field(INPA, "test:ml:user:user_control CP")
+  field(INPA, "test:ml:user:user_ctrl CP")
   #field(INAM, "subChecksInit")
   field(SNAM, "subChecksProcess") #python module, or c subroutine should check with both cases
   field(VAL, "0")
