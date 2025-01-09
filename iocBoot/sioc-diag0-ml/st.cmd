@@ -15,8 +15,8 @@ AutonomousMinimization_registerRecordDeviceDriver(pdbbase)
 ## Load record instances
 
 
-py("from magnet_generators import MagnetGenerator;")
-py("print(MagnetGenerator(beamline='DIAG0').device_list)")
+#py("from magnet_generators import MagnetGenerator;")
+#py("print(MagnetGenerator(beamline='DIAG0').device_list)")
 
 #dbLoadRecords("db/test.db","user=cgarnier")
 #dbLoadRecords("db/test_pydevsup.db")

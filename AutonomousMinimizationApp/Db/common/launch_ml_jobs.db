@@ -1,17 +1,64 @@
-  record(longin, "test:ml:emit") {
+
+record(bo, "test:ml:emit:user_ctrl") {
+    field(DESC, "Controls whether or not emittance prog will perform readiness checks and run")
+    field(ZNAM, "OFF")   # Name for 0
+    field(ONAM, "ON")    # Name for 1
+    field(VAL, "0")      # Initial value
+}
+
+record(stringout, "test:ml:emit:yaml") {
+    field(DESC, "String containing the name of the programs yaml file")
+    field(OUT,  "auto_emit_diag0.yaml")
+}
+
+record(sub, "test:ml:emit:readiness_checks"){
+  #field(INPA, "test:ml:user:user_control PP")
+  field(SCAN, "1 second")
+  field(SNAM,"program_readiness_checks") #python module, or c subroutine should check with both cases
+  field(VAL, "0")
+}
+
+record(calcout, "test:ml:emit:ready"){
+  field(INPA, "test:ml:emit:user_ctrl")
+  field(INPB, "test:ml:emit:readiness_checks")
+  #field(INPC, "SIOC:SYS0:MP00:SC_DIAG0_BC") #TODO: convert to $(MPS), will force the field to be a value that allows for the record to proc
+  #field(INPD, "PS:DIAG0:1:TRIGSTATE") # will force the field to be a value that allows for the record to proc
+  #field(INPE, "TPG:SYS0:1:DST01:RATE_RBV") #will force the field to be a value that allows for it proc
+  field(INPC, "1")
+  field(INPD, "1")
+  field(INPE, "1")
+  field(CALC, "A=B=C=D=E=F=1?1:0" )
+  field(OOPT, "When Non-zero")
+}
+
+
+record(longin, "test:ml:emit:program") {
     field(DTYP, "Python Device")
     field(INP , "@ml_emittance_scan_runner DIAG0 QDG006 OTRDG02")
   }
 
 
+record(mbbi, "test:ml:emit:prog_status") {
+    field(DESC, "description")
+    field(INP,  "input_link")
+    field(ZRST, "zero_string")        field(ZRVL, "zero_value")
+    field(ONST, "one_string")         field(ONVL, "one_value")
+    field(TWST, "two_string")         field(TWVL, "two_value")
+    field(THST, "three_string")       field(THVL, "three_value")
+    field(FRST, "four_string")        field(FRVL, "four_value")
+    field(FVST, "five_string")        field(FVVL, "five_value")
+    field(SXST, "six_string")         field(SXVL, "six_value")
+    field(SVST, "seven_string")       field(SVVL, "seven_value")
+    field(EIST, "height_string")      field(EIVL, "heigt_value")
+    field(NIST, "nine_string")        field(NIVL, "nine_value")
+    field(TEST, "ten_string")         field(TEVL, "ten_value")
+    field(ELST, "eleven_string")      field(ELVL, "eleven_value")
+    field(TVST, "twelve_string")      field(TVVL, "twelve_value")
+    field(TTST, "thirteen_string")    field(TTVL, "thirteen_value")
+    field(FTST, "fourteen_string")    field(FTVL, "fourteen_value")
+    field(FFST, "fifteen_string")     field(FFVL, "fifteen_value")
+}
 
-#
-
-#record(longin, "test:ml:emit") {
-    #field(DTYP, "Python Device")
-    #field(INP , "@ml_emittance_scan_runner @emittance_serialize:serialized_model") #can only be 256 characters... idk if this is the method we want to take
-    #maybe should pass a list of args to reduce characters.... then the list is used to instantiate all classes needed for emittance....
-  #}
 
 #record(aSub, "emittance_serialize")
 #{
@@ -19,10 +66,6 @@
   #field(SNAM,"emittance_serializer")
   #field(OUTA, "serialized_model")
 #}
-
-
-
-
   # hard code values for test purposes decide where we want field(DTYP, "Python) (pydevsup) or field(DTYP)
 #record(record(calc, "ML:$(B):STATSUMY") {
     #field(DESC, "Stats summary for $(B) readiness")
@@ -33,3 +76,8 @@
     #field(INPG, "ML:USER:READY")
     #field(CALC, "A=B&&A=D&&B=E&&C=F?1:0")
 #}) 
+#record(longin, "test:ml:emit") {
+    #field(DTYP, "Python Device")
+    #field(INP , "@ml_emittance_scan_runner @emittance_serialize:serialized_model") #can only be 256 characters... idk if this is the method we want to take
+    #maybe should pass a list of args to reduce characters.... then the list is used to instantiate all classes needed for emittance....
+  #}

@@ -8,6 +8,11 @@ import numpy as np
 from typing import List
 from datetime import datetime
 
+
+#TODO: yaml loader here.
+#TODO: reconfigure code to no longer need multiple cmd line args but instead receives a yaml filename
+
+
 class AutonomousEmittanceScanMeasure(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)   
     energy: float = .091 #arbitrary right now until we can get energy value
@@ -78,4 +83,3 @@ def build(record,args):
     return EmittanceRunner(record,*largs)
 
 # why is the PV not visible from dev3 when the ioc is started? is it that I needa soft ioc? I don't understand
-# get an exception in del_record (EmittanceRunner)

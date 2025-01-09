@@ -19,7 +19,7 @@ AutonomousMinimization_SRCS_DEFAULT += AutonomousMinimizationMain.cpp
 AutonomousMinimization_SRCS_vxWorks += -nil-
 
 AutonomousMinimization_SRCS += launcher.c
-
+AutonomousMinimization_SRCS += program_readiness_checks.c
 
 # AutonomousMinimization.dbd will be created and installed
 

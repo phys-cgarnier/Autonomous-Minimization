@@ -1,0 +1,1 @@
+print('program is ready')

@@ -1,0 +1,9 @@
+area:
+  - DIAG0
+magnets:
+  - QDG006
+screens:
+  - OTRDG02
+program:
+  - AutonomousEmittanceMeasurement
+
