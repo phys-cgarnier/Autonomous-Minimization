@@ -1,13 +1,13 @@
 
 record(bo, "test:ml:emit:user_ctrl"){
-    field(DESC, "Controls whether or not emittance prog will perform readiness checks and run")
+    field(DESC, "User Ctrl")
     field(ZNAM, "OFF")
     field(ONAM, "ON")
     field(VAL, "0")
 }
 
 record(stringout, "test:ml:emit:yaml"){
-    field(DESC, "String containing the name of the programs yaml file")
+    field(DESC, "Name of the programs yaml file")
     field(VAL,  "auto_emit_diag0.yaml")
 }
 
