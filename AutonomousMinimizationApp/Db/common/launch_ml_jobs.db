@@ -19,6 +19,7 @@ record(sub, "test:ml:emit:readiness_checks"){
 }
 
 record(calcout, "test:ml:emit:ready"){
+  field(SCAN, "2 second")
   field(INPA, "test:ml:emit:user_ctrl")
   field(INPB, "test:ml:emit:readiness_checks")
   #field(INPC, "SIOC:SYS0:MP00:SC_DIAG0_BC") #TODO: convert to $(MPS), will force the field to be a value that allows for the record to proc
@@ -29,8 +30,15 @@ record(calcout, "test:ml:emit:ready"){
   field(INPE, "1")
   field(CALC, "A=B=C=D=E=F=1?1:0" )
   field(OOPT, "When Non-zero")
+  field(OUT,"test:ml:emit:program_start PP")
 }
 
+record(ao,"test:ml:emit:program_start"){
+  field(DESC, "Start of program")
+  field(VAL, "0'")
+  field(FLNK, "test:ml:emit:program")
+
+}
 
 record(longin, "test:ml:emit:program") {
     field(DTYP, "Python Device")
