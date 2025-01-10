@@ -12,13 +12,13 @@ static long subChecksInit(struct subRecord *psub){
 
 static long subChecksProcess(struct subRecord *psub){
     // Access inputs
-    double inpa = psub->a;
+    int inpa = psub->a;
     // Print the values to the IOC console
     printf("subRecord '%s' called with INPA=%.2f\n", psub->name, inpa);
 
     // Perform optional computation (here, we'll set the VAL field to INPA + INPB)
-    int result = 1;
-    psub->val = result;
+
+    psub->val = inpa;
 
     // Return 0 for success
     return 0;

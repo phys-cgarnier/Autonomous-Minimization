@@ -4,6 +4,7 @@ record(bo, "test:ml:emit:user_ctrl"){
     field(ZNAM, "OFF")
     field(ONAM, "ON")
     field(VAL, "0")
+    field(PINI,"YES")
 }
 
 record(stringout, "test:ml:emit:yaml"){
@@ -16,7 +17,6 @@ record(sub, "test:ml:emit:readiness_checks"){
   field(SNAM, "subChecksProcess") #python module, or c subroutine should check with both cases
   field(INPA, "test:ml:emit:user_ctrl CP")
   field(VAL, "0")
-  field(PINI, "YES")
 }
 
 record(calcout, "test:ml:emit:ready"){
@@ -37,13 +37,14 @@ record(calcout, "test:ml:emit:ready"){
 record(ao,"test:ml:emit:program_start"){
   field(DESC, "Start of program")
   field(VAL, "0")
-  #field(FLNK, "test:ml:emit:program")
+  field(FLNK, "test:ml:emit:program")
 }
 
-#record(longin, "test:ml:emit:program") {
-    #field(DTYP, "Python Device")
-    #field(INP , "@ml_emittance_scan_runner DIAG0 QDG006 OTRDG02")
-  #}
+record(longin, "test:ml:emit:program"){
+    field(DTYP, "Python Device")
+    field(INP, "@ml_emittance_scan_runner DIAG0 QDG006 OTRDG02")
+    #field(VAL, "0")
+  }
 
 #record(aSub, "emittance_serialize")
 #{
