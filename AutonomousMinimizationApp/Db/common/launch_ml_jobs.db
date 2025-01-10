@@ -38,7 +38,7 @@ record(calcout, "test:ml:emit:ready"){
 record(ao,"test:ml:emit:program_start"){
   field(DESC, "Start of program")
   field(VAL, "0")
-  field(FLNK, "test:ml:emit:program")
+  #field(FLNK, "test:ml:emit:program")
   field(TPRO, "1")
 }
 #
