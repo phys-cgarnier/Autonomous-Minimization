@@ -21,6 +21,11 @@ AutonomousMinimization_registerRecordDeviceDriver(pdbbase)
 #dbLoadRecords("db/test.db","user=cgarnier")
 #dbLoadRecords("db/test_pydevsup.db")
 dbLoadRecords("db/launch_ml_jobs.db")
+#scanOnceSetQueueSize(8000)
+
+
+# Load common Access Configuration File
+#< ${ACF_INIT}
 
 cd("${TOP}/iocBoot/${IOC}")
 iocInit()
