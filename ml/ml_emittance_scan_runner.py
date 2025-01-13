@@ -7,12 +7,12 @@ from lcls_tools.common.measurements.screen_profile import ScreenBeamProfileMeasu
 import numpy as np
 from typing import List
 from datetime import datetime
-from devsup import db
+#from devsup import db
 
 #TODO: yaml loader here.
 #TODO: reconfigure code to no longer need multiple cmd line args but instead receives a yaml filename
-fn = str(db.getRecord('test:ml:emit:yaml').VAL)
-print(f'init runner with: {fn}')
+#fn = str(db.getRecord('test:ml:emit:yaml').VAL)
+#print(f'init runner with: {fn}')
 
 class AutonomousEmittanceScanMeasure(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)   
