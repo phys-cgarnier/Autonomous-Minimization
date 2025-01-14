@@ -33,7 +33,7 @@ class AutonomousEmittanceScanMeasure(BaseModel):
     def instantiate_screen(cls, screen, values):
         screen = create_screen(values.data['area'], values.data['screen_name'])
         return screen
-
+    '''
     @field_validator("scan_values", mode="after")
     def instantiate_scan_values(cls, scan_values, values):
         if values['magnet'] is None:
@@ -41,7 +41,7 @@ class AutonomousEmittanceScanMeasure(BaseModel):
         else:
             scan_values = np.linspace(values['magnet'].magnet.bmin,values['magnet'].magnet.bmax,5)
         return scan_values
-
+    '''
 class EmittanceRunner:
     # multi threading when I have capacity --> look at examples in pydevsup source code
     def __init__(self, record_name, area, magnet_name, screen_name):
