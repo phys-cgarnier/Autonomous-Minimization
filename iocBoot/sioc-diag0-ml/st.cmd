@@ -8,6 +8,7 @@
 cd "${TOP}"
 #epicsEnvSet(PYTHONPATH, "$(PYTHONPATH):$(EPICS_SITE_TOP)/R7.0.3.1-1.0/modules/pyDevSup/R1.2-0.0.2PY3.10/python3.10/rhel7-x86_64")
 epicsEnvSet(BEAMLINE, "DIAG0")
+epicsEnvSet("EPICS_CA_ENABLE_PREEMPTIVE_CALLBACK", "YES")
 ## Register all support components
 dbLoadDatabase("dbd/AutonomousMinimization.dbd")
 AutonomousMinimization_registerRecordDeviceDriver(pdbbase)
@@ -23,6 +24,8 @@ AutonomousMinimization_registerRecordDeviceDriver(pdbbase)
 dbLoadRecords("db/launch_ml_jobs.db")
 #scanOnceSetQueueSize(8000)
 
+#callbackSetQueueSize(5000)
+#scanOnceSetQueueSize(5000)
 
 # Load common Access Configuration File
 #< ${ACF_INIT}
