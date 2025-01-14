@@ -34,8 +34,8 @@ class AutonomousEmittanceScanMeasure(BaseModel):
         screen = create_screen(values.data['area'], values.data['screen_name'])
         return screen
 
-    @field_validator("scan_value", mode="after")
-    def instantiate_screen(cls, scan_values, values):
+    @field_validator("scan_values", mode="after")
+    def instantiate_scan_values(cls, scan_values, values):
         if values['magnet'] is None:
             raise ValueError('magnet is of type none, cannot validate quad scan values')
         else:
