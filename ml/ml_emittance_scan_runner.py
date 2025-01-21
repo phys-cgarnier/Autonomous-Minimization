@@ -28,33 +28,38 @@ class AutonomousEmittanceScanMeasure(BaseModel):
 
     @field_validator("magnet", mode="after")
     def instantiate_magnet(cls, magnet, values):
-        magnet = create_magnet(values.data['area'], values.data['magnet_name'])
+        print('getting magnet name', values.get('magnet_name'))
+        if not magnet:
+            magnet = create_magnet(values['area'], values['magnet_name'])
         return magnet
     
     @field_validator("screen", mode="after")
     def instantiate_screen(cls, screen, values):
-        screen = create_screen(values.data['area'], values.data['screen_name'])
+        if not screen:
+            screen = create_screen(values['area'], values['screen_name'])
         return screen
     
     @field_validator("scan_values", mode="after")
     def instantiate_scan_values(cls, scan_values, values):
-        if values['magnet'] is None:
+        if not scan_values:
+            
             raise ValueError('magnet is of type none, cannot validate quad scan values')
         else:
-            scan_values = np.linspace(values.data['magnet'].magnet.bmin,values.data['magnet'].magnet.bmax,5)
+            scan_values = np.linspace(values['magnet'].magnet.bmin,values['magnet'].magnet.bmax,5)
         return scan_values
     
     @field_validator("beamsize_measurement", mode="after")
     def instantiate_beamsize_measurement(cls,beamsize_measurement, values):
-        beamsize_measurement = ScreenBeamProfileMeasurement(device= values.data['screen'])
+        beamsize_measurement = ScreenBeamProfileMeasurement(device= values['screen'])
         return beamsize_measurement
     
     @field_validator("quad_scan", mode="after")
     def instantiate_quad_scan(cls,quad_scan, values):
-        quad_scan = QuadScanEmittance(energy = values.data['energy'], scan_values=
-                             values.data['scan_values'], magnet = values.data['magnet'], beamsize_measurement=
-                             values.data['beamsize_measurement'])
+        quad_scan = QuadScanEmittance(energy = values['energy'], scan_values=
+                             values['scan_values'], magnet = values['magnet'], beamsize_measurement=
+                             values['beamsize_measurement'])
         return quad_scan
+    
     
 class EmittanceRunner:
     # multi threading when I have capacity --> look at examples in pydevsup source code
