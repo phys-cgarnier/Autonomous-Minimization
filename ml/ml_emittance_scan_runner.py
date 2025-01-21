@@ -27,47 +27,33 @@ class AutonomousEmittanceScanMeasure(BaseModel):
     #TODO: add energy getter method PV instead of passing energy
 
     @model_validator(mode='before')
-    def initialize_devices(cls, values):
-        print("Model validator called with values:", values)
-        
-        # Initialize magnet
-        if values.get('magnet') is None:
-            print("Creating magnet")
-            values['magnet'] = create_magnet(values['area'], values['magnet_name'])
-        
-        # Initialize screen
-        if values.get('screen') is None:
-            print("Creating screen")
-            values['screen'] = create_screen(values['area'], values['screen_name'])
-        
-        # Initialize scan values
-        if values.get('scan_values') is None and values.get('magnet') is not None:
-            print("Creating scan values")
-            values['scan_values'] = np.linspace(
-                values['magnet'].magnet.bmin,
-                values['magnet'].magnet.bmax,
-                5
-            ).tolist()  # Convert to list for Pydantic
-        
-        # Initialize beamsize measurement
-        if values.get('beamsize_measurement') is None and values.get('screen') is not None:
-            print("Creating beamsize measurement")
-            values['beamsize_measurement'] = ScreenBeamProfileMeasurement(
-                device=values['screen']
-            )
-        
-        # Initialize quad scan
-        if (values.get('quad_scan') is None and 
-            all(values.get(k) is not None for k in ['magnet', 'scan_values', 'beamsize_measurement'])):
-            print("Creating quad scan")
-            values['quad_scan'] = QuadScanEmittance(
-                energy=values['energy'],
-                scan_values=values['scan_values'],
-                magnet=values['magnet'],
-                beamsize_measurement=values['beamsize_measurement']
-            )
-        
+    def instantiate_magnet(cls,values):
+        if 'magnet' not in values:
+            values['magnet'] = create_magnet(values['area'],values['magnet_name'],)
         return values
+
+    @model_validator(mode='before')
+    def instantiate_screen(cls,values):
+        if 'screen' not in values:
+            values['screen'] = create_screen(values['area'],values['screen_name'],)
+        return values
+
+    @model_validator(mode='after')
+    def instantiate_scan_values(cls,instance):
+        instance.scan_values = np.linspace(instance.magnet.bmin,instance.magnet.bmax,5)
+        return instance
+
+    @model_validator(mode='after')
+    def instantiate_screen_measurement(cls,instance):
+        instance.beamsize_measurement = ScreenBeamProfileMeasurement(device=instance.screen)
+        return instance
+
+    @model_validator(mode='after')
+    def instantiate_quad_scan(cls,instance):
+        instance.quad_scan = QuadScanEmittance(energy = instance.energy, scan_values=
+                             instance.scan_values, magnet = instance.magnet, beamsize_measurement=
+                             instance.beamsize_measurement)
+        return instance
 
     
     
