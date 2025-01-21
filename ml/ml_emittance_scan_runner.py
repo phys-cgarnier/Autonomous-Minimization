@@ -8,11 +8,14 @@ from lcls_tools.common.measurements.screen_profile import ScreenBeamProfileMeasu
 from typing import List, Dict, Any, Optional
 import numpy as np
 import yaml
+import os
 
 def load_yaml(yaml_name):
-    with open(yaml_name, 'r') as program_file:
-        program_data = yaml.safe_load(program_file)
-    return program_data
+    print(os.getcwd())
+    #with open(yaml_name, 'r') as program_file:
+        #program_data = yaml.safe_load(program_file)
+    return None
+    #return program_data
 
 class AutonomousEmittanceScanMeasure(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
