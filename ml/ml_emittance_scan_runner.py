@@ -7,9 +7,13 @@ from lcls_tools.common.devices.reader import create_magnet, create_screen
 from lcls_tools.common.measurements.screen_profile import ScreenBeamProfileMeasurement
 from typing import List, Dict, Any, Optional
 import numpy as np
+import yaml
 
+def load_yaml(yaml_name):
+    with open(yaml_name, 'r') as program_file:
+        program_data = yaml.safe_load(program_file)
+    return program_data
 
-    
 class AutonomousEmittanceScanMeasure(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
     
@@ -72,27 +76,25 @@ class AutonomousEmittanceScanMeasure(BaseModel):
     
 class EmittanceRunner:
     # multi threading when I have capacity --> look at examples in pydevsup source code
-    def __init__(self, record_name, area, magnet_name, screen_name):
+    def __init__(self, record_name, args):
+        area, magnet_name, screen_name = args.split(' ', 2)
+        self.yaml_name = record_name.info('program_yaml')
+        program_data = load_yaml(self.yaml_name)
+        print(program_data)
         self.auto_emittance_kwargs = {'area':area, 'magnet_name' :magnet_name, 'screen_name' : screen_name}
         self.auto_emittance = AutonomousEmittanceScanMeasure(**self.auto_emittance_kwargs)
         print(self.auto_emittance.__repr__)
-    def detach(self,rec):
+
+    def detach(self,record_name):
         pass
-
+    def allowScan(self, record_name):
+        pass
     def process(self,record_name,args):
-
-        ### what is the smartest wa to do this..... I dont know???
-        ### make a pydanic class that can run emittance the ????? I dont KNOW!~
-
-        record_name = f'Process {record_name} was a success'
         print(self.auto_emittance.quad_scan.name)
-        print('hello world')
 
 
-def build(record,args):
-    print(f'build {args}')
-    largs = args.split(' ',2)
-    largs = [l.strip() for l in largs ]
-    return EmittanceRunner(record,*largs)
 
+#def build(record_name,args):
+#    return EmittanceRunner(record_name,args)
+build = EmittanceRunner
 # why is the PV not visible from dev3 when the ioc is started? is it that I needa soft ioc? I don't understand
