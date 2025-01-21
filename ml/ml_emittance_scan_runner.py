@@ -11,50 +11,63 @@ import numpy as np
 
     
 class AutonomousEmittanceScanMeasure(BaseModel):
-    model_config = ConfigDict(arbitrary_types_allowed=True) 
-    energy: float = .091 #arbitrary right now until we can get energy value
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+    
+    energy: float = .091
     area: str
     magnet_name: str
-    magnet: Optional[Magnet] = None 
+    magnet: Optional[Magnet] = None
     scan_values: Optional[List[float]] = None
     screen_name: str
     screen: Optional[Screen] = None
     beamsize_measurement: Optional[ScreenBeamProfileMeasurement] = None
     quad_scan: Optional[QuadScanEmittance] = None
-    #run_attempts: int --> these params need to get set else where.
-    #run_wait_time_ms: int
 
-    #TODO: add energy getter method PV instead of passing energy
-
+    # Single 'before' validator for device creation
     @model_validator(mode='before')
-    def instantiate_magnet(cls,values):
-        if 'magnet' not in values:
-            values['magnet'] = create_magnet(values['area'],values['magnet_name'],)
+    def create_devices(cls, values):
+        try:
+            if values.get('magnet') is None:
+                values['magnet'] = create_magnet(values['area'], values['magnet_name'])
+            
+            if values.get('screen') is None:
+                values['screen'] = create_screen(values['area'], values['screen_name'])
+        except Exception as e:
+            raise ValueError(f"Failed to create devices: {str(e)}")
         return values
 
-    @model_validator(mode='before')
-    def instantiate_screen(cls,values):
-        if 'screen' not in values:
-            values['screen'] = create_screen(values['area'],values['screen_name'],)
-        return values
-
+    # Single 'after' validator for dependent calculations
     @model_validator(mode='after')
-    def instantiate_scan_values(cls,instance):
-        instance.scan_values = np.linspace(instance.magnet.bmin,instance.magnet.bmax,5)
-        return instance
+    def setup_measurements(self):
+        if self.magnet is None:
+            raise ValueError("Magnet must be initialized")
+        if self.screen is None:
+            raise ValueError("Screen must be initialized")
 
-    @model_validator(mode='after')
-    def instantiate_screen_measurement(cls,instance):
-        instance.beamsize_measurement = ScreenBeamProfileMeasurement(device=instance.screen)
-        return instance
+        try:
+            # Set scan values
+            if self.scan_values is None:
+                self.scan_values = np.linspace(self.magnet.bmin, self.magnet.bmax, 5)
 
-    @model_validator(mode='after')
-    def instantiate_quad_scan(cls,instance):
-        instance.quad_scan = QuadScanEmittance(energy = instance.energy, scan_values=
-                             instance.scan_values, magnet = instance.magnet, beamsize_measurement=
-                             instance.beamsize_measurement)
-        return instance
+            # Create beam profile measurement
+            if self.beamsize_measurement is None:
+                self.beamsize_measurement = ScreenBeamProfileMeasurement(device=self.screen)
 
+            # Create quad scan after all dependencies are ready
+            if self.quad_scan is None:
+                if any(v is None for v in [self.scan_values, self.beamsize_measurement]):
+                    raise ValueError("Required dependencies not initialized")
+                
+                self.quad_scan = QuadScanEmittance(
+                    energy=self.energy,
+                    scan_values=self.scan_values,
+                    magnet=self.magnet,
+                    beamsize_measurement=self.beamsize_measurement
+                )
+        except Exception as e:
+            raise ValueError(f"Failed to setup measurements: {str(e)}")
+
+        return self
     
     
 class EmittanceRunner:
