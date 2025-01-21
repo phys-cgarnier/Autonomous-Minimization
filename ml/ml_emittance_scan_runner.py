@@ -1,5 +1,5 @@
 
-from pydantic import BaseModel , field_validator, ConfigDict
+from pydantic import BaseModel ,model_validator, field_validator, ConfigDict
 from lcls_tools.common.measurements.emittance_measurement import QuadScanEmittance
 from lcls_tools.common.devices.magnet import Magnet
 from lcls_tools.common.devices.screen import Screen
@@ -26,39 +26,49 @@ class AutonomousEmittanceScanMeasure(BaseModel):
 
     #TODO: add energy getter method PV instead of passing energy
 
-    @field_validator("magnet", mode="after")
-    def instantiate_magnet(cls, magnet, values):
-        print('getting magnet name', values.get('magnet_name'))
-        if not magnet:
-            magnet = create_magnet(values['area'], values['magnet_name'])
-        return magnet
-    
-    @field_validator("screen", mode="after")
-    def instantiate_screen(cls, screen, values):
-        if not screen:
-            screen = create_screen(values['area'], values['screen_name'])
-        return screen
-    
-    @field_validator("scan_values", mode="after")
-    def instantiate_scan_values(cls, scan_values, values):
-        if not scan_values:
-            
-            raise ValueError('magnet is of type none, cannot validate quad scan values')
-        else:
-            scan_values = np.linspace(values['magnet'].magnet.bmin,values['magnet'].magnet.bmax,5)
-        return scan_values
-    
-    @field_validator("beamsize_measurement", mode="after")
-    def instantiate_beamsize_measurement(cls,beamsize_measurement, values):
-        beamsize_measurement = ScreenBeamProfileMeasurement(device= values['screen'])
-        return beamsize_measurement
-    
-    @field_validator("quad_scan", mode="after")
-    def instantiate_quad_scan(cls,quad_scan, values):
-        quad_scan = QuadScanEmittance(energy = values['energy'], scan_values=
-                             values['scan_values'], magnet = values['magnet'], beamsize_measurement=
-                             values['beamsize_measurement'])
-        return quad_scan
+    @model_validator(mode='before')
+    def initialize_devices(cls, values):
+        print("Model validator called with values:", values)
+        
+        # Initialize magnet
+        if values.get('magnet') is None:
+            print("Creating magnet")
+            values['magnet'] = create_magnet(values['area'], values['magnet_name'])
+        
+        # Initialize screen
+        if values.get('screen') is None:
+            print("Creating screen")
+            values['screen'] = create_screen(values['area'], values['screen_name'])
+        
+        # Initialize scan values
+        if values.get('scan_values') is None and values.get('magnet') is not None:
+            print("Creating scan values")
+            values['scan_values'] = np.linspace(
+                values['magnet'].magnet.bmin,
+                values['magnet'].magnet.bmax,
+                5
+            ).tolist()  # Convert to list for Pydantic
+        
+        # Initialize beamsize measurement
+        if values.get('beamsize_measurement') is None and values.get('screen') is not None:
+            print("Creating beamsize measurement")
+            values['beamsize_measurement'] = ScreenBeamProfileMeasurement(
+                device=values['screen']
+            )
+        
+        # Initialize quad scan
+        if (values.get('quad_scan') is None and 
+            all(values.get(k) is not None for k in ['magnet', 'scan_values', 'beamsize_measurement'])):
+            print("Creating quad scan")
+            values['quad_scan'] = QuadScanEmittance(
+                energy=values['energy'],
+                scan_values=values['scan_values'],
+                magnet=values['magnet'],
+                beamsize_measurement=values['beamsize_measurement']
+            )
+        
+        return values
+
     
     
 class EmittanceRunner:
