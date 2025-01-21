@@ -61,7 +61,7 @@ class EmittanceRunner:
     def __init__(self, record_name, area, magnet_name, screen_name):
         self.auto_emittance_kwargs = {'area':area, 'magnet_name' :magnet_name, 'screen_name' : screen_name}
         self.auto_emittance = AutonomousEmittanceScanMeasure(**self.auto_emittance_kwargs)
-
+        print(self.auto_emittance.__repr__)
     def detach(self,rec):
         pass
 
