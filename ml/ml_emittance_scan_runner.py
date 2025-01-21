@@ -9,6 +9,7 @@ from typing import List, Dict, Any, Optional
 import numpy as np
 
 
+    
 class AutonomousEmittanceScanMeasure(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True) 
     energy: float = .091 #arbitrary right now until we can get energy value
@@ -23,6 +24,7 @@ class AutonomousEmittanceScanMeasure(BaseModel):
     #run_attempts: int --> these params need to get set else where.
     #run_wait_time_ms: int
 
+    #TODO: add energy getter method PV instead of passing energy
 
     @field_validator("magnet", mode="after")
     def instantiate_magnet(cls, magnet, values):
@@ -33,15 +35,27 @@ class AutonomousEmittanceScanMeasure(BaseModel):
     def instantiate_screen(cls, screen, values):
         screen = create_screen(values.data['area'], values.data['screen_name'])
         return screen
-    '''
+    
     @field_validator("scan_values", mode="after")
     def instantiate_scan_values(cls, scan_values, values):
         if values['magnet'] is None:
             raise ValueError('magnet is of type none, cannot validate quad scan values')
         else:
-            scan_values = np.linspace(values['magnet'].magnet.bmin,values['magnet'].magnet.bmax,5)
+            scan_values = np.linspace(values.data['magnet'].magnet.bmin,values.data['magnet'].magnet.bmax,5)
         return scan_values
-    '''
+    
+    @field_validator("beamsize_measurement", mode="after")
+    def instantiate_beamsize_measurement(cls,beamsize_measurement, values):
+        beamsize_measurement = ScreenBeamProfileMeasurement(device= values.data['screen'])
+        return beamsize_measurement
+    
+    @field_validator("quad_scan", mode="after")
+    def instantiate_quad_scan(cls,quad_scan, values):
+        quad_scan = QuadScanEmittance(energy = values.data['energy'], scan_values=
+                             values.data['scan_values'], magnet = values.data['magnet'], beamsize_measurement=
+                             values.data['beamsize_measurement'])
+        return quad_scan
+    
 class EmittanceRunner:
     # multi threading when I have capacity --> look at examples in pydevsup source code
     def __init__(self, record_name, area, magnet_name, screen_name):
@@ -57,7 +71,7 @@ class EmittanceRunner:
         ### make a pydanic class that can run emittance the ????? I dont KNOW!~
 
         record_name = f'Process {record_name} was a success'
-        #print(self.auto_emittance.quad_scan.name)
+        print(self.auto_emittance.quad_scan.name)
         print('hello world')
 
 
