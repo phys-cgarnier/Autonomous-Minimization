@@ -11,10 +11,10 @@ import yaml
 import os
 
 def load_yaml(yaml_name):
-    print(os.getcwd())
+    fp = os.getcwd()
     #with open(yaml_name, 'r') as program_file:
         #program_data = yaml.safe_load(program_file)
-    return None
+    return fp
     #return program_data
 
 class AutonomousEmittanceScanMeasure(BaseModel):
@@ -75,7 +75,7 @@ class AutonomousEmittanceScanMeasure(BaseModel):
             raise ValueError(f"Failed to setup measurements: {str(e)}")
 
         return self
-    
+
     
 class EmittanceRunner:
     # multi threading when I have capacity --> look at examples in pydevsup source code
@@ -86,14 +86,15 @@ class EmittanceRunner:
         print(program_data)
         self.auto_emittance_kwargs = {'area':area, 'magnet_name' :magnet_name, 'screen_name' : screen_name}
         self.auto_emittance = AutonomousEmittanceScanMeasure(**self.auto_emittance_kwargs)
-        print(self.auto_emittance.__repr__)
+        #print(self.auto_emittance.__repr__)
 
     def detach(self,record_name):
         pass
     def allowScan(self, record_name):
         pass
     def process(self,record_name,args):
-        print(self.auto_emittance.quad_scan.name)
+        print(self.auto_emittance.quad_scan.scan_values)
+        pass
 
 
 
