@@ -6,8 +6,8 @@
 < envPaths
 
 cd "${TOP}"
-#epicsEnvSet(PYTHONPATH, "$(PYTHONPATH):$(EPICS_SITE_TOP)/R7.0.3.1-1.0/modules/pyDevSup/R1.2-0.0.2PY3.10/python3.10/rhel7-x86_64:../../../../lcls-tools")
-epicsEnvSet(PYTHONPATH, "$(PYTHONPATH):/u/cd/cgarnier/autonomous_diag0/lcls-tools")
+epicsEnvSet(PYTHONPATH, "$(PYTHONPATH):$(EPICS_SITE_TOP)/R7.0.3.1-1.0/modules/pyDevSup/R1.2-0.0.2PY3.10/python3.10/rhel7-x86_64")
+#epicsEnvSet(PYTHONPATH, "$(PYTHONPATH):/u/cd/cgarnier/autonomous_diag0/lcls-tools")
 epicsEnvSet(BEAMLINE, "DIAG0")
 
 
@@ -24,15 +24,17 @@ epicsEnvSet("EPICS_CA_REPEATER_PORT","5069")
 epicsEnvSet("EPICS_CA_SERVER_PORT","5068")
 
 
+
 ## Register all support components
 dbLoadDatabase("dbd/AutonomousMinimization.dbd")
 AutonomousMinimization_registerRecordDeviceDriver(pdbbase)
 
 ## Load record instances
 
-
-#py("from magnet_generators import MagnetGenerator;")
-#py("print(MagnetGenerator(beamline='DIAG0').device_list)")
+py("import epics; print(epics.ca.initialize_libca())")
+py("print('imported epics')")
+py("from magnet_generators import MagnetGenerator;")
+py("print(MagnetGenerator(beamline='DIAG0').device_list)")
 
 #dbLoadRecords("db/test.db","user=cgarnier")
 #dbLoadRecords("db/test_pydevsup.db")

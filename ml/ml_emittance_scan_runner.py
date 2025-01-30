@@ -1,37 +1,26 @@
 
-from pydantic import BaseModel ,model_validator, field_validator, ConfigDict
-from lcls_tools.common.measurements.emittance_measurement import QuadScanEmittance
-from lcls_tools.common.devices.magnet import Magnet
-from lcls_tools.common.devices.screen import Screen
-from lcls_tools.common.devices.reader import create_magnet, create_screen
-from lcls_tools.common.measurements.screen_profile import ScreenBeamProfileMeasurement
+from ml.autonomous_emittance import AutonomousEmittanceScanMeasure
 from typing import List, Dict, Any, Optional
 import numpy as np
 import yaml
 import os
-
-def load_yaml(yaml_name):
-    filepath = '../../yaml/' + yaml_name
-    if os.path.exists(filepath):
-        with open(filepath, 'r') as program_file:
-            program_data = yaml.safe_load(program_file)
-    else:
-        program_data = 'This is a blank string'
-    return program_data
+import epics
+import threading
+print('hello world')
 
 
-    
+
+ 
 class EmittanceRunner:
     # multi threading when I have capacity --> look at examples in pydevsup source code
     def __init__(self, record_name, args):
         area, magnet_name, screen_name = args.split(' ', 2)
-        self.yaml_name = record_name.info('program_yaml')
-        print(self.yaml_name)
-        program_data = load_yaml(self.yaml_name)
-        #print(program_data)
-        self.model = QuadScanEmittance.model_validate(program_data)
-        print(self.model.scan_values)
-
+        kwargs = {'area' :area, 'magnet_name': magnet_name}
+        self.auto_emit = AutonomousEmittanceScanMeasure(**kwargs)
+        #self.auto_emit.print_attr()
+        self.mag_pv = epics.PV('QUAD:DIAG0:390:BACT')
+        #print(self.mag_pv)
+        #print(self.auto_emit.combo)
     def detach(self,record_name):
         pass
     def allowScan(self, record_name):
