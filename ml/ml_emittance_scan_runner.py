@@ -13,7 +13,7 @@ def load_yaml(yaml_name):
     #return program_data
 
 
-    
+### want jsut one thing that takes care off all progs
 class EmittanceRunner:
     # multi threading when I have capacity --> look at examples in pydevsup source code
     def __init__(self, record_name, args):
