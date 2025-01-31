@@ -10,3 +10,4 @@ iocBoot/*/envPaths
 iocBoot/*/*/envPaths
 *~
 *.pyc
+python3.10/
