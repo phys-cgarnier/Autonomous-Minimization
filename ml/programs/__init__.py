@@ -1,1 +1,1 @@
-from .autonomous_emittance import AutonomousEmittanceMeasurement
+from autonomous_program import AutonomousProgram
