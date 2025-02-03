@@ -1,4 +1,4 @@
-TOP=..
+TOP=../..
 include $(TOP)/configure/CONFIG
 include $(PYDEVSUP)/configure/CONFIG_PY
 

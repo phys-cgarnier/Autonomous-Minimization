@@ -1,6 +1,6 @@
 
-from ml.programs.registry import PROGRAM_REGISTRY
-from ml.programs.base import AutonomousProgramBaseClass
+from ml.registry import PROGRAM_REGISTRY
+from ml.base import AutonomousProgramBaseClass
 
 class AutonomousProgram(AutonomousProgramBaseClass):
 

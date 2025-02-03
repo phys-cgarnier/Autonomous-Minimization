@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import Any, Dict, Type
 from pydantic import BaseModel, ValidationError, Field, model_validator, field_validator, ConfigDict
-from ml.programs.registry import PROGRAM_REGISTRY
+from ml.registry import PROGRAM_REGISTRY
 
 
 class AutonomousProgramBaseClass(BaseModel, ABC):

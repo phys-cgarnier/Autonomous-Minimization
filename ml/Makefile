@@ -1,11 +1,12 @@
 TOP=..
 include $(TOP)/configure/CONFIG
 include $(PYDEVSUP)/configure/CONFIG_PY
-
 PY += __init__.py
+PY += registry.py
+PY += base.py
+PY += autonomous_program.py
 PY += program_support.py
-DIRS += programs
-
 include $(TOP)/configure/RULES
-include $(TOP)/configure/RULES_DIRS
 include $(PYDEVSUP)/configure/RULES_PY
+
+

@@ -1,7 +1,8 @@
 
 from lcls_tools.common.measurements.emittance_measurement import QuadScanEmittance
-from programs import AutonomousProgram
+from ml.autonomous_program import AutonomousProgram
 import numpy as np
+from pathlib import Path
 
 
 
@@ -10,8 +11,10 @@ class AutonomousProgramSupport:
     # multi threading when I have capacity --> look at examples in pydevsup source code
     def __init__(self, record_name, args):
         area, magnet_name, screen_name = args.split(' ', 2)
+        print(area, magnet_name, screen_name)
         self.yaml_name = record_name.info('program_yaml')
-        self.auto_program= AutonomousProgram.from_yaml(self.yaml_name)
+        path = Path(f"../../ml/{self.yaml_name}")
+        self.auto_program= AutonomousProgram.from_yaml(path)
 
     def detach(self,record_name):
         pass
