@@ -1,0 +1,9 @@
+
+record(bo, "test:ml:emit:user_ctrl"){
+    field(DESC, "User Ctrl")
+    field(ZNAM, "OFF")
+    field(ONAM, "ON")
+    field(VAL, "0")
+    field(PINI,"YES")
+    field(TPRO, "1")
+ }
