@@ -43,14 +43,14 @@ class AutonomousProgramBaseClass(BaseModel, ABC):
 
         # Extract the first key and associated value
         program_key, program_data = next(iter(data.items()))
-
+        print('program key ', program_key)
         # Dynamically find the correct subclass from the registry
         try: 
-            program = PROGRAM_REGISTRY.get(program_key).model_validate(program_data)
+            program = (PROGRAM_REGISTRY.get(program_key)).model_validate(program_data)
         except ValidationError as e:
             print('insufficient program data in yaml')
         
-        return cls(file_path = file_path, program_key = program_key, program_data = program_data, program = program)
+        return cls(file_path = file_path, program_key = program_key, raw_data = program_data, program = program)
 
         #return subclass(file_path=file_path, program_key=program_key, raw_data=program_data)
     @classmethod

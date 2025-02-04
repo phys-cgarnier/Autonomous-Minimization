@@ -13,7 +13,7 @@ class AutonomousProgramSupport:
         area, magnet_name, screen_name = args.split(' ', 2)
         print(area, magnet_name, screen_name)
         self.yaml_name = record_name.info('program_yaml')
-        path = Path(f"../../ml/{self.yaml_name}")
+        path = Path(f"../../yaml/{self.yaml_name}")
         self.auto_program= AutonomousProgram.from_yaml(path)
 
     def detach(self,record_name):

@@ -42,7 +42,7 @@ record(ao,"test:ml:emit:program_start"){
 record(longin, "test:ml:emit:program"){
     field(DTYP, "Python Device")
     field(INP, "@program_support DIAG0 QDG006 OTRDG02")
-    info("program_yaml", "auto_emit_diag0.yaml")
+    info("program_yaml", "test.yaml")
 }
 
 #record(aSub, "emittance_serialize")
