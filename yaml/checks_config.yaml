@@ -1,0 +1,21 @@
+
+dest:
+  - SC_DIAG0
+areas:
+  - DIAG0
+extensions:
+  magnet_extension:
+    - INTLKSUMY
+    - STATMSG
+  vacuum_extensions:
+    - INTLKSUMY
+    - POSITION
+  camera_extensions:
+    - CAMERA_PWR
+    - PNEUMATIC
+pvs:
+  MPS:
+    - SIOC:SYS0:MP00:SC_DIAG0_BC
+  Timing:
+  - TPG:SYS0:1:DST01:RATE_RBV
+  - PS:DIAG0:1:TRIGSTATE
