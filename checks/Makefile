@@ -3,7 +3,8 @@ include $(TOP)/configure/CONFIG
 include $(PYDEVSUP)/configure/CONFIG_PY
 
 PY += __init__.py
-#PY += program_readiness_checks.py
+PY += system_checks.py
+PY += system_checks_support.py
 
 
 include $(TOP)/configure/RULES

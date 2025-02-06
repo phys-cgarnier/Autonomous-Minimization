@@ -1,1 +1,0 @@
-print('program is ready')

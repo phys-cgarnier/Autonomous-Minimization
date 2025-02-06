@@ -1,9 +1,57 @@
 
-record(bo, "test:ml:emit:user_ctrl"){
-    field(DESC, "User Ctrl")
+record(bo, "$(MODE):ML:$(DEST):CTRL"){
+    field(DESC, "User Program Control")
     field(ZNAM, "OFF")
     field(ONAM, "ON")
     field(VAL, "0")
     field(PINI,"YES")
     field(TPRO, "1")
  }
+record(bo, "$(MODE):ML:$(DEST):EOIC_PERMISSIONS"){
+    field(DESC, "EOIC Program Permissions")
+    field(ZNAM, "OFF")
+    field(ONAM, "ON")
+    field(VAL, "0")
+    field(PINI,"YES")
+    field(TPRO, "1")
+ }
+
+record(stringout, "$(MODE):ML:$(DEST):PROGRAM_FILE"){
+    field(DESC, "Name of the programs yaml file")
+    field(VAL,  "program.yaml")
+    # when updated inits a hook for program validation -- in program_support.py
+}
+
+record(stringout, "$(MODE):ML:$(DEST):CHECKS_CONFIG_FILE"){
+    field(DESC, "Name of the programs yaml file")
+    field(VAL,  "checks_config.yaml")
+    # when updated inits a hook for config validation -- in system_checks_support.py
+}
+
+record(longin, "$(MODE):ML:$(DEST):SYSTEM_CHECKS"){
+    field(DTYP, "Python Device")
+    field(INP, "@system_checks_support")
+    info("config_yaml", "checks_config.yaml")
+}
+
+record(waveform, "$(MODE):ML:$(DEST):SYSTEM_CHECKS:STRINGOUT"){
+    field(DESC, "Holds the config dictionary for system checks")
+    field(DTYP, "SOFT CHANNEL")
+    field(NELM, "2048")
+    field(FTVL, "CHAR")
+    field(INP, "$(MODE):ML:$(DEST):SYSTEM_CHECKS.VAL CPP")
+}
+
+record(longin, "$(MODE):ML:$(EMIT):PROGRAM"){
+    field(DTYP, "Python Device")
+    field(INP, "@program_support $(MODE):ML:$(DEST):SYSTEM_CHECKS:STRINGOUT")
+    info("program_yaml", "program.yaml")
+}
+
+record(waveform, "$(MODE):ML:$(DEST):PROGRAM:STRINGOUT"){
+    field(DESC, "Holds the config dictionary for system checks")
+    field(DTYP, "SOFT CHANNEL")
+    field(NELM, "4096")
+    field(FTVL, "CHAR")
+    field(INP, "$(MODE):ML:$(DEST):PROGRAM.VAL CPP")
+}
