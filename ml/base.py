@@ -56,6 +56,7 @@ class AutonomousProgramBaseClass(BaseModel, ABC):
     @classmethod
     def from_system(cls, program_key: str, system_checks_dict: Dict[str,Any]):
         pass
+    
     '''
     def revalidate(self) -> None:
         """
@@ -65,3 +66,4 @@ class AutonomousProgramBaseClass(BaseModel, ABC):
         self.program_model = updated_instance.program_model
         self.raw_data = updated_instance.raw_data
     '''
+
