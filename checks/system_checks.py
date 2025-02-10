@@ -14,14 +14,14 @@ import pprint
 MAPPING_DICT = {
                 'magnet': ['BEND', 'BTRM', 'XCOR', 'YCOR', 'QUAD', 'LGPS', 'KICK'],
                 'screen': ['OTRS'],
-                'vacuum': ['VAC']
+                'vacuum': ['VVPG'] #maybe I don't need this could be something take care of by MPS
                 }
 
 
 class SystemChecks(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
     yaml_file: Path
-    config: Dict[str]
+    config: Dict
     devices: Dict[str,List[str]]
     #pv_list: List[epics.PV]
 
@@ -39,9 +39,12 @@ class SystemChecks(BaseModel):
                 raise ValueError(f"Error reading YAML file: {exc}")
 
         else:
-            # append to abs path the path to yaml folder
+            # append to abs path the path to yaml folder --- will need to check this while testing the ioc 
+            # returns posix error if yaml is not found?
             search_path = Path('../../yaml/')
             found_path = next(search_path.rglob(file_path), None)
+            print(found_path)
+
             try:
                 with found_path.open("r", encoding="utf-8") as f:
                     config = yaml.safe_load(f)
@@ -53,12 +56,15 @@ class SystemChecks(BaseModel):
             
         areas = config.get('areas')
         device_dict = {area: cls.get_devices(area) for area in areas}
-        device_defaults = cls.device_to_pv_mapping(device_list= device_dict['DIAG0'], mapping_dict = MAPPING_DICT)
-        pprint.pprint(device_dict)
-        pprint.pprint(device_defaults)
-        pprint.pprint(MAPPING_DICT)
-
-        return cls(yaml_file = file_path, config= config, device= device_dict)
+        pvs = cls.device_to_pv_mapping(device_list= device_dict['DIAG0'], 
+                                                   mapping_dict = MAPPING_DICT, 
+                                                   extensions =config.get('extensions'))
+        print(pvs)
+        #pprint.pprint(device_dict)
+        #pprint.pprint(device_defaults)
+        #pprint.pprint(MAPPING_DICT)
+        #pprint.pprint(config)
+        return None #cls(yaml_file = file_path, config= config, device= device_dict)
 
     @staticmethod
     def get_devices(area: str):
@@ -66,20 +72,29 @@ class SystemChecks(BaseModel):
         return device_list
     
     @staticmethod
-    def device_to_pv_mapping(device_list: List[str], mapping_dict: Dict[str,List])-> List[epics.PV]:
+    def device_to_pv_mapping(device_list: List[str], mapping_dict: Dict[str,List], extensions: Dict[str,list])-> List[epics.PV]:
         #device->TYPE:AREA:UNITNUM
         #if TYPE in key for in mapping_dict.keys()
         #Type = QUAD, key = magnet -> lookup config.key
         #[epics.PV()]
+
+        #TODO: one day when you have time make this faster time complexity..... this is a triple or quadruple for loop
+        #TODO: spend some time learning how.
         device_defaults = defaultdict(list)
         [device_defaults[d.split(":")[0]].append(d) for d in device_list]
-        #for key, val in device_defaults.items():
-            #for config_key, config_val in 
-        # this is a headache it the most software engineery thing in the whole app it needs to be properly with the best 
-        # time complexity possible because it will be ran many many times. possibly.....
-        # need a list of pvs for each device in and devices per value in config[device_type] but device_type has many sub
-        # device types 
-        return device_defaults
+        mapped_dict = {}
+        for key,val_list in mapping_dict.items():
+            for val in val_list:
+                devices = device_defaults[val]
+                pv_ext = extensions[key]
+                #print(devices)
+                #print(pv_ext)
+                pvs = [dev +':'+ ext for dev, ext in zip(devices,pv_ext)]
+                if mapped_dict.get(key):
+                    mapped_dict[key] += pvs
+                else:
+                    mapped_dict[key] = pvs
+        return mapped_dict
     
     def checks_pv_statuses(self):
         pass 
