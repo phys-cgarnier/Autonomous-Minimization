@@ -1,10 +1,16 @@
 import yaml
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import Any, Dict, Type
+from typing import Any, Dict, Type, List
 from pydantic import BaseModel, ValidationError, Field, model_validator, field_validator, ConfigDict
 from ml.registry import PROGRAM_REGISTRY
-
+from lcls_tools.common.devices import device
+class ProgramDevice(BaseModel):
+    #TODO: get devices from raw_data, send to system checks to check if status is bad either delete it from the device list
+    # or replace it 
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+    device: device
+    tree_path: str
 
 class AutonomousProgramBaseClass(BaseModel, ABC):
     """
@@ -15,7 +21,7 @@ class AutonomousProgramBaseClass(BaseModel, ABC):
     file_path: Path = Field(..., description="Path to the YAML program file")
     program_key: str = Field(..., description="Extracted program key from YAML")
     raw_data: Dict[str, Any] = Field(..., description="Raw YAML data under the program key")
-
+    program_devices = Dict[str,List[ProgramDevice]]
     # This field holds the validated Pydantic model instance
     program: BaseModel = Field(..., description = 'Program to run')
 
@@ -25,8 +31,12 @@ class AutonomousProgramBaseClass(BaseModel, ABC):
         Abstract method to validate `raw_data` using a specific Pydantic model.
         Subclasses must implement this.
         """
-        pass
-        #maybe abstract?
+        ...
+
+    @abstractmethod
+    def dump_model(self):
+        ...
+
     @classmethod
     def from_yaml(cls, file_path: Path) -> "AutonomousProgramBaseClass":
         """
@@ -53,9 +63,10 @@ class AutonomousProgramBaseClass(BaseModel, ABC):
         return cls(file_path = file_path, program_key = program_key, raw_data = program_data, program = program)
 
         #return subclass(file_path=file_path, program_key=program_key, raw_data=program_data)
+    
     @classmethod
     def from_system(cls, program_key: str, system_checks_dict: Dict[str,Any]):
-        pass
+        ...
     
     '''
     def revalidate(self) -> None:

@@ -3,6 +3,7 @@ from lcls_tools.common.measurements.emittance_measurement import QuadScanEmittan
 from ml.autonomous_program import AutonomousProgram
 import numpy as np
 from pathlib import Path
+from devsup.hooks import initHook
 
 
 
