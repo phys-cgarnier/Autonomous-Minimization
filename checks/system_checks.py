@@ -8,13 +8,14 @@ from typing import List, Dict, Any
 import epics
 from collections import defaultdict
 import pprint
+from itertools import product
 #TODO: so for now we are just going to check pvs and extensions kind of one by one with hardcoded logic, but in the
 # in the future maybe this work should be more of a sweet where strings have meta attached to them like whether they
 # are pvs or extensions and the meta data is what subsystem cares about them.
 MAPPING_DICT = {
-                'magnet': ['BEND', 'BTRM', 'XCOR', 'YCOR', 'QUAD', 'LGPS', 'KICK'],
+                'magnet': ['KICK','BEND', 'BTRM', 'XCOR', 'YCOR', 'QUAD', 'LGPS'],
                 'screen': ['OTRS'],
-                'vacuum': ['VVPG'] #maybe I don't need this could be something take care of by MPS
+                #'vacuum': ['VVPG'] #maybe I don't need this could be something take care of by MPS
                 }
 
 
@@ -23,7 +24,7 @@ class SystemChecks(BaseModel):
     yaml_file: Path
     config: Dict
     devices: Dict[str,List[str]]
-    #pv_list: List[epics.PV]
+    pv_list: Dict[str,List[epics.PV]]
 
     @classmethod
     def from_yaml(cls, file_path: Path) -> "SystemChecks":
@@ -56,15 +57,15 @@ class SystemChecks(BaseModel):
             
         areas = config.get('areas')
         device_dict = {area: cls.get_devices(area) for area in areas}
-        pvs = cls.device_to_pv_mapping(device_list= device_dict['DIAG0'], 
-                                                   mapping_dict = MAPPING_DICT, 
-                                                   extensions =config.get('extensions'))
-        print(pvs)
+        #pvs = cls.device_to_pv_mapping(device_list= device_dict['DIAG0'], 
+        #                                           mapping_dict = MAPPING_DICT, 
+        #                                           extensions =config.get('extensions'))
+        #print(pvs)
         #pprint.pprint(device_dict)
         #pprint.pprint(device_defaults)
         #pprint.pprint(MAPPING_DICT)
         #pprint.pprint(config)
-        return None #cls(yaml_file = file_path, config= config, device= device_dict)
+        return  cls(yaml_file = file_path, config= config, devices= device_dict) #, pv_list=pvs)
 
     @staticmethod
     def get_devices(area: str):
@@ -73,6 +74,9 @@ class SystemChecks(BaseModel):
     
     @staticmethod
     def device_to_pv_mapping(device_list: List[str], mapping_dict: Dict[str,List], extensions: Dict[str,list])-> List[epics.PV]:
+        #maybe dont even need this..... 
+        
+        
         #device->TYPE:AREA:UNITNUM
         #if TYPE in key for in mapping_dict.keys()
         #Type = QUAD, key = magnet -> lookup config.key
@@ -89,16 +93,24 @@ class SystemChecks(BaseModel):
                 pv_ext = extensions[key]
                 #print(devices)
                 #print(pv_ext)
-                pvs = [dev +':'+ ext for dev, ext in zip(devices,pv_ext)]
+                pvs = [epics.PV(dev +':'+ ext) for dev, ext in product(devices,pv_ext)]
+                #print(pvs)
                 if mapped_dict.get(key):
                     mapped_dict[key] += pvs
                 else:
                     mapped_dict[key] = pvs
+                #print(mapped_dict)
         return mapped_dict
     
-    def checks_pv_statuses(self):
-        pass 
-    
+    def perform_checks(self,program_pvs):
+        pass
+
+    def check_magnet_pv_severity(self):
+        pass
+
+    def check_screen_pv_severity(self):
+        pass
+
     def revalidate(self):
         pass
 
