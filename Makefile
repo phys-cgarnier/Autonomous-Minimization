@@ -7,7 +7,6 @@ DIRS += configure
 DIRS += $(wildcard *Sup)
 DIRS += $(wildcard *App)
 DIRS += checks
-DIRS += generators
 DIRS += ml
 DIRS += $(wildcard *Top)
 DIRS += $(wildcard iocBoot)
@@ -36,4 +35,4 @@ include $(TOP)/configure/RULES_TOP
 distclean: remove_sub_products
 
 remove_sub_products:
-	rm -rf AutonomousMinimizationApp/Db/*_sub.substitutions python3.10/
+	rm -rf AutonomousMinimizationApp/Db/*_sub.substitutions python3.10/ ml/__pycache__ checks/__pycache__
