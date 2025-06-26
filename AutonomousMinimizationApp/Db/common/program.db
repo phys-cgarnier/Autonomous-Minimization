@@ -18,12 +18,21 @@ record(bo, "ML:DIAG0:AUTO:PROG_CTRL"){
     field(FLNK, "ML:DIAG0:AUTO:MASK" )
  }
 
+record(stringout, "ML:DIAG0:AUTO:HOME_DIR"){
+    field(VAL, "/sdf/home/c/cgarnier/autonomous_diag0/")
+}
 record(stringout, "ML:DIAG0:AUTO:PROG_FILE"){
-    field(VAL,  "absolute/path/to/script")
+    field(VAL, "Autonomous-Minimization/tests/test_A.py")
 }
 
 record(stringout, "ML:DIAG0:AUTO:PROG_FILE2"){
-    field(VAL,  "absolute/path/to/script")
+    field(VAL, "Autonomous-Minimization/tests/test_B.py")
+}
+
+record(waveform, "ML:DIAG0:AUTO:WVFM") {
+    field(DESC, "description")
+    field(NELM, "256")
+    field(FTVL, "CHAR")
 }
 
 record(stringout, "ML:DIAG0:AUTO:DUMP_FOLDER"){
@@ -32,13 +41,17 @@ record(stringout, "ML:DIAG0:AUTO:DUMP_FOLDER"){
 
 record(longin, "ML:DIAG0:AUTO:PROG"){
     field(DTYP, "Python Device")
-    field(INP, "@autonomous_program_support {'user_ctrl' : 'ML:DIAG0:AUTO:USER_CTRL', prog_file': 'ML:DIAG0:AUTO:PROG_FILE'}")
+    field(INP, "@autonomous_program_support {'ctrl' : 'ML:DIAG0:AUTO:PROG_CTRL', 'prog_file': 'ML:DIAG0:AUTO:PROG_FILE', 'home_dir': 'ML:DIAG0:AUTO:HOME_DIR'}")
 }
 
-record(longin, "ML:DIAG0:AUTO:PROGRAM2"){
+
+record(longin, "ML:DIAG0:AUTO:PROG2"){
     field(DTYP, "Python Device")
-    field(INP, "@autonomous_program_support {'user_ctrl' : 'ML:DIAG0:AUTO:USER_CTRL', prog_file': 'ML:DIAG0:AUTO:PROG_FILE2'}")
+    field(INP, "@autonomous_program_support {'ctrl' : 'ML:DIAG0:AUTO:PROG_CTRL2', 'prog_file': 'ML:DIAG0:AUTO:PROG_FILE2', 'home_dir': 'ML:DIAG0:AUTO:HOME_DIR'}")
 }
+#{'ctrl_pv' : 'ML:DIAG0:AUTO:PROG_CTRL2', prog_file': 'ML:DIAG0:AUTO:PROG_FILE2'}
+
+
 
 record(calcout, "ML:DIAG0:AUTO:MASK") {
     field(DESC, "description")
@@ -49,16 +62,16 @@ record(calcout, "ML:DIAG0:AUTO:MASK") {
     field(OOPT, "Every Time")
 }
 
-record(seq, "ML:DIAG0:AUTO:PROG") {
-    field(SCAN, "400 second")
+record(seq, "ML:DIAG0:AUTO:PROG_SELECT") {
+    field(SCAN, "30 second")
     field(DESC, "description")
     field(SELM, "Mask")
     field(SELN, "1")
     field(DOL1, "1")
-    field(LNK1, "ML:DIAG0:AUTO:PROGRAM.PROC")
-    field(DLY2, "200")
+    field(LNK1, "ML:DIAG0:AUTO:PROG.PROC")
+    field(DLY2, "45")
     field(DOL2, "1")
-    field(LNK2, "ML:DIAG0:AUTO:PROGRAM2.PROC")
+    field(LNK2, "ML:DIAG0:AUTO:PROG2.PROC")
 }
 
 
