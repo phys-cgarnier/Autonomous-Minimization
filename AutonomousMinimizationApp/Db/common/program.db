@@ -63,13 +63,13 @@ record(calcout, "ML:DIAG0:AUTO:MASK") {
 }
 
 record(seq, "ML:DIAG0:AUTO:PROG_SELECT") {
-    field(SCAN, "30 second")
+    field(SCAN, "300 second")
     field(DESC, "description")
     field(SELM, "Mask")
     field(SELN, "1")
     field(DOL1, "1")
     field(LNK1, "ML:DIAG0:AUTO:PROG.PROC")
-    field(DLY2, "45")
+    field(DLY2, "150")
     field(DOL2, "1")
     field(LNK2, "ML:DIAG0:AUTO:PROG2.PROC")
 }
