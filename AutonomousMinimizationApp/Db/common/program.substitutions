@@ -1,0 +1,4 @@
+file program.template
+{
+    {AREA="DIAG0",EXEC="EMIT", EXEC2 = "GPSR"}
+}

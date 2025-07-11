@@ -1,0 +1,76 @@
+#broken links dbcar(*,1)
+record(bo, "PHYS:$(AREA):1:$(EXEC)_CTRL"){
+    field(DESC, "User Ctrl")
+    field(ZNAM, "OFF")
+    field(ONAM, "ON")
+    field(VAL, "0")
+    field(PINI,"YES")
+    field(FLNK, "PHYS:$(AREA):1:MASK" )
+}
+
+ record(bo, "PHYS:$(AREA):1:$(EXEC2)_CTRL"){
+    field(DESC, "User Ctrl2")
+    field(ZNAM, "OFF")
+    field(ONAM, "ON")
+    field(VAL, "0")
+    field(PINI,"YES")
+    field(FLNK, "PHYS:$(AREA):1:MASK" )
+}
+
+record(stringout, "PHYS:$(AREA):1:HOME_DIR"){
+    field(VAL, "/sdf/home/c/cgarnier/autonomous_diag0/")
+}
+record(stringout, "PHYS:$(AREA):1:$(EXEC)_FILE"){
+    field(VAL, "Autonomous-Minimization/tests/test_A.py")
+}
+
+record(stringout, "PHYS:$(AREA):1:$(EXEC2)_FILE"){
+    field(VAL, "Autonomous-Minimization/tests/test_B.py")
+}
+
+record(stringout, "PHYS:$(AREA):1:DUMP_FOLDER"){
+    field(VAL,  "path/to/folder")
+}
+
+record(longin, "PHYS:$(AREA):1:$(EXEC)_PROG"){
+    field(DTYP, "Python Device")
+    field(INP, "@autonomous_program_support {'ctrl' : 'PHYS:$(AREA):1:$(EXEC)_CTRL', 'prog_file': 'PHYS:$(AREA):1:$(EXEC)_FILE', 'home_dir': 'PHYS:$(AREA):1:HOME_DIR'}")
+}
+
+record(longin, "PHYS:$(AREA):1:$(EXEC2)_PROG"){
+    field(DTYP, "Python Device")
+    field(INP, "@autonomous_program_support {'ctrl' : 'PHYS:$(AREA):1:$(EXEC2)_CTRL', 'prog_file': 'PHYS:$(AREA):1:$(EXEC2)_FILE', 'home_dir': 'PHYS:$(AREA):1:HOME_DIR'}")
+}
+
+record(calcout, "PHYS:$(AREA):1:MASK") {
+    field(DESC, "description")
+    field(CALC, "A=1&B=1?3:B?2:A?1:0")
+    field(INPA, "PHYS:$(AREA):1:$(EXEC)_CTRL")
+    field(INPB, "PHYS:$(AREA):1:$(EXEC2)_CTRL")
+    field(OUT,  "PHYS:$(AREA):1:PROG_SELECT.SELN")
+    field(OOPT, "Every Time")
+}
+
+record(seq, "PHYS:$(AREA):1:PROG_SELECT") {
+    field(SCAN, "30 second")
+    field(DESC, "description")
+    field(SELM, "Mask")
+    field(SELN, "1")
+    field(DOL1, "1")
+    field(LNK1, "PHYS:$(AREA):1:$(EXEC)_PROG.PROC")
+    field(DLY2, "45")
+    field(DOL2, "1")
+    field(LNK2, "PHYS:$(AREA):1:$(EXEC2)_PROG.PROC")
+}
+
+record(ao, "PHYS:$(AREA):1:$(EXEC)_WATCHER") {
+    field(DESC, "PHYS:$(AREA):1:$(EXEC)_CTRL Watcher")
+    field(VAL,  "0.000")
+    field(PINI, "YES")
+}
+
+record(ao, "PHYS:$(AREA):1:$(EXEC2)_WATCHER") {
+    field(DESC, "PHYS:$(AREA):1:$(EXEC2)_CTRL Watcher")
+    field(VAL,  "0.000")
+    field(PINI, "YES")
+}

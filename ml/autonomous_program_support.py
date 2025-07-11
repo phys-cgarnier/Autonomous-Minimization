@@ -19,7 +19,7 @@ class AutonomousProgramSupport:
         pass
 
     def process(self,record, *args):
-        fn = str(self.home_dir.VAL) + '/' + str(self.prog_file.VAL)
+        fn = str(self.home_dir.VAL) + str(self.prog_file.VAL)
         print(fn)
         #TODO: set call back to val field of this record to running? or a status pv - this is after tests
         try:
